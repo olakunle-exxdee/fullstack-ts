@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import products from '../products';
 import Product from '../components/Product';
+import axios from 'axios';
 export interface ProductProps {
   _id: string;
   name: string;
@@ -15,18 +16,30 @@ export interface ProductProps {
   numReviews: number;
 }
 
-const HomeScreeen = () => (
-  <>
-    <h1>Lastest Products</h1>
+const HomeScreeen = () => {
+  const [products, setProducts] = useState<ProductProps[]>([]);
 
-    <Row>
-      {products.map((product: ProductProps) => (
-        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-          <Product product={product} />
-        </Col>
-      ))}
-    </Row>
-  </>
-);
+  useEffect(() => {
+    // use axios to fetch data from backend
+    const fetchProducts = async () => {
+      const { data } = await axios.get('/api/products');
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
+  return (
+    <>
+      <h1>Lastest Products</h1>
+
+      <Row>
+        {products.map((product: ProductProps) => (
+          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+            <Product product={product} />
+          </Col>
+        ))}
+      </Row>
+    </>
+  );
+};
 
 export default HomeScreeen;
