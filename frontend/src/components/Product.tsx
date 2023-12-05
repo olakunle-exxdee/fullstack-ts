@@ -1,5 +1,7 @@
 import { Card } from 'react-bootstrap';
 import { ProductProps } from '../screens/HomeScreeen';
+import { Link } from 'react-router-dom';
+import Rating from './Rating';
 interface MyComponentProps {
   product: ProductProps;
 }
@@ -7,18 +9,21 @@ interface MyComponentProps {
 const Product = (product: MyComponentProps) => {
   return (
     <Card className=' my-3 p-y rounded '>
-      <a href={`/product/${product.product._id}`}>
+      <Link to={`/product/${product.product._id}`}>
         <Card.Img src={product.product.image} variant='top' />
-      </a>
+      </Link>
       <Card.Body>
-        <a href={`/product/${product.product._id}`}>
-          <Card.Title as='div'>
+        <Link to={`/product/${product.product._id}`}>
+          <Card.Title className='product-title' as='div'>
             <strong>{product.product.name}</strong>
           </Card.Title>
-        </a>
+        </Link>
         <Card.Text as='div'>
           <div className='my-3'>
-            {product.product.rating} from {product.product.numReviews} reviews
+            <Rating
+              value={product.product.rating}
+              text={product.product.numReviews}
+            />
           </div>
         </Card.Text>
         <Card.Text as='h3'>${product.product.price}</Card.Text>
