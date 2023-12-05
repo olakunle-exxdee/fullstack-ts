@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Row,
@@ -9,12 +10,20 @@ import {
   ListGroupItem,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
-import products from '../products';
+
 import { ProductProps } from './HomeScreeen';
+import axios from 'axios';
 const ProductScreen = () => {
+  const [product, setProduct] = useState<ProductProps>();
   const { id } = useParams();
-  const product: ProductProps | undefined = products.find((p) => p._id === id);
-  console.log(product);
+  useEffect(() => {
+    // use axios to fetch data from backend
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${id}`);
+      setProduct(data);
+    };
+    fetchProduct();
+  }, [id]);
 
   return (
     <>
