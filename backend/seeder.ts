@@ -41,5 +41,6 @@ const destroyData = async () => {
 if (process.argv[2] === '-d') {
   destroyData();
 } else {
+  console.log('Importing Data...');
   importData();
 }

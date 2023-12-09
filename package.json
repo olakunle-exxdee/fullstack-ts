@@ -2,7 +2,7 @@
   "name": "fullstack-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "backend/server.js",
   "scripts": {
     "start": " ts-node backend/server.ts",
     "server": "nodemon backend/server.ts",
@@ -10,8 +10,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc",
     "serve": "node dist/server.js",
-    "data:import": "node backend/seeder.ts",
-    "data:destroy": "node backend/seeder.ts -d"
+    "data:import": "ts-node backend/seeder.ts",
+    "data:destroy": "ts-node backend/seeder.ts -d"
   },
   "keywords": [],
   "author": "",
