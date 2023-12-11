@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { AppDispatch } from '../store';
+import { useDispatch } from 'react-redux';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   Row,
   Col,
@@ -10,20 +12,49 @@ import {
   ListGroupItem,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
+import { useGetProductDetailsQuery } from '../slices/productSlice';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import { addToCart } from '../slices/cartSlice';
 
-import { ProductProps } from './HomeScreeen';
-import axios from 'axios';
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#non-null-assertion-operator
+function invariant(value: unknown): asserts value {
+  if (value) return;
+
+  throw new Error('Invariant violation');
+}
+
 const ProductScreen = () => {
-  const [product, setProduct] = useState<ProductProps>();
-  const { id } = useParams();
-  useEffect(() => {
-    // use axios to fetch data from backend
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${id}`);
-      setProduct(data);
-    };
-    fetchProduct();
-  }, [id]);
+  const params = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [qty, setQty] = useState(1);
+
+  invariant(params.id);
+
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useGetProductDetailsQuery(params.id);
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const addToCartHandler = () => {
+    if (product) {
+      dispatch(addToCart({ ...product, qty }));
+      navigate(`/cart`);
+    }
+  };
+
+  if (isLoading) return <Loader />;
+
+  if (error) {
+    const errorMessage =
+      'message' in error
+        ? error.message // Handle FetchBaseQueryError
+        : 'An error occurred'; // Handle other types of errors
+    return <Message variant='danger'>{errorMessage}</Message>;
+  }
 
   return (
     <>
@@ -72,11 +103,30 @@ const ProductScreen = () => {
                   </Col>
                 </Row>
               </ListGroupItem>
+              {product && product?.countInStock > 0 && (
+                <ListGroupItem>
+                  <Row>
+                    <Col>Qty</Col>
+                    <Col>
+                      <select
+                        value={qty}
+                        onChange={(e) => setQty(Number(e.target.value))}>
+                        {[...Array(product?.countInStock).keys()].map((x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </Col>
+                  </Row>
+                </ListGroupItem>
+              )}
               <ListGroupItem>
                 <Button
                   className='btn-block'
                   type='button'
-                  disabled={!product?.countInStock}>
+                  disabled={!product?.countInStock}
+                  onClick={addToCartHandler}>
                   Add to Cart
                 </Button>
               </ListGroupItem>

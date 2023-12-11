@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
-
 import Product from '../components/Product';
-import axios from 'axios';
-export interface ProductProps {
+import { useGetProductsQuery } from '../slices/productSlice';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+
+export interface ProductType {
   _id: string;
   name: string;
   image: string;
@@ -14,25 +15,30 @@ export interface ProductProps {
   countInStock: number;
   rating: number;
   numReviews: number;
+  qty: number;
 }
 
 const HomeScreeen = () => {
-  const [products, setProducts] = useState<ProductProps[]>([]);
+  const { data: products, error, isLoading } = useGetProductsQuery();
+  if (isLoading) return <Loader />;
 
-  useEffect(() => {
-    // use axios to fetch data from backend
-    const fetchProducts = async () => {
-      const { data } = await axios.get('/api/products');
-      setProducts(data);
-    };
-    fetchProducts();
-  }, []);
+  // fix thisroperty 'message' does not exist on type 'FetchBaseQueryError | SerializedError'.
+  // Property 'message' does not exist on type '{ status: number; data: unknown; }'
+
+  if (error) {
+    const errorMessage =
+      'message' in error
+        ? error.message // Handle FetchBaseQueryError
+        : 'An error occurred'; // Handle other types of errors
+
+    return <Message variant='danger'>{errorMessage}</Message>;
+  }
   return (
     <>
       <h1>Lastest Products</h1>
 
       <Row>
-        {products.map((product: ProductProps) => (
+        {products?.map((product: ProductType) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product product={product} />
           </Col>

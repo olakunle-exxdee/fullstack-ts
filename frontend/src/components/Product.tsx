@@ -1,9 +1,9 @@
 import { Card } from 'react-bootstrap';
-import { ProductProps } from '../screens/HomeScreeen';
+import { ProductType } from '../screens/HomeScreeen';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 interface MyComponentProps {
-  product: ProductProps;
+  product: ProductType;
 }
 
 const Product = (product: MyComponentProps) => {

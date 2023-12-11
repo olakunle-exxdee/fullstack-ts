@@ -6,11 +6,11 @@ import Footer from './components/Footer';
 const App = () => {
   return (
     <>
-      <Header />;
+      <Header />
       <main className='test-center py-3'>
         <Outlet />
       </main>
-      <Footer />;
+      <Footer />
     </>
   );
 };
