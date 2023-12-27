@@ -12,13 +12,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import HomeScreeen from './screens/HomeScreeen';
 import ProductScreen from './screens/ProductScreen';
+import CartScreen from './screens/CartScreen';
 import { store } from './store';
 import { Provider } from 'react-redux';
+import Message from './components/Message';
+
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreeen />} />
+      <Route path='/cart' element={<CartScreen />} />
       <Route path='/product/:id' element={<ProductScreen />} />
+      <Route
+        path='*'
+        element={<Message variant='danger'>{'An error occurred'}</Message>}
+      />
     </Route>
   )
 );

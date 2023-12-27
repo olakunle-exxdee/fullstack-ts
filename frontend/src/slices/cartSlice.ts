@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductType } from '../screens/HomeScreeen';
+import { updateCart } from '../utils/cartUtils';
 
 export interface CartState {
   cartItems: ProductType[];
@@ -31,28 +32,19 @@ const cartSlice = createSlice({
       } else {
         state.cartItems = [...state.cartItems, item];
       }
-      // calculate item price
-      state.itemsPrice = state.cartItems.reduce(
-        (acc, item) => acc + item.price * item.qty,
-        0
+
+      return updateCart(state);
+    },
+    removeFromCart: (state: CartState, action: PayloadAction<string>) => {
+      state.cartItems = state.cartItems.filter(
+        (cartItem) => cartItem._id !== action.payload
       );
-      // calculate shipping price
-      state.shippingPrice = state.itemsPrice > 100 ? 0 : 10;
-      // calculate tax price
-      state.taxPrice = Number(0.15 * state.itemsPrice).toFixed(
-        2
-      ) as unknown as number;
-      // calculate total price
-      state.totalPrice = Number(
-        Number(state.itemsPrice) +
-          Number(state.shippingPrice) +
-          Number(state.taxPrice)
-      ).toFixed(2) as unknown as number;
-      localStorage.setItem('cart', JSON.stringify({ ...state }));
+
+      return updateCart(state);
     },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeFromCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

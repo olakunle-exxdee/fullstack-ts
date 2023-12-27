@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Container } from 'react-bootstrap';
 
 const Message = ({
   variant = 'info',
@@ -8,7 +8,13 @@ const Message = ({
   variant: string;
   children: React.ReactNode;
 }) => {
-  return <Alert variant={variant}>{children}</Alert>;
+  return (
+    <Container fluid>
+      <Alert variant={variant} className='t'>
+        {children}
+      </Alert>
+    </Container>
+  );
 };
 
 export default Message;
