@@ -1,7 +1,8 @@
-import exp from 'constants';
 import { Request, Response, NextFunction } from 'express';
 const asyncHandler =
   (fn: any) => (req: Request, res: Response, next: NextFunction) => {
+    console.log((req as any).user, 'req asyncHandler');
+
     return Promise.resolve(fn(req, res, next)).catch(next);
   };
 

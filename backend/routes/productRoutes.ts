@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction, Router } from 'express';
+import express, { Router } from 'express';
 import { getProducts, getProductById } from '../controllers/productController';
 
 const router: Router = express.Router();
