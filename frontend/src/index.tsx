@@ -16,6 +16,12 @@ import CartScreen from './screens/CartScreen';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import Message from './components/Message';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ShippingScreen from './screens/ShippingScreen';
+import PrivateRoute from './components/PrivateRoute';
+import PaymentScreen from './screens/PaymentScreen';
+import PlaceOrderScreen from './screens/PlaceOrderScreen';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -23,10 +29,17 @@ const routes = createBrowserRouter(
       <Route index={true} path='/' element={<HomeScreeen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/product/:id' element={<ProductScreen />} />
+      <Route path='/login' element={<LoginScreen />} />
+      <Route path='/register' element={<RegisterScreen />} />
       <Route
         path='*'
         element={<Message variant='danger'>{'An error occurred'}</Message>}
       />
+      <Route path='' element={<PrivateRoute />}>
+        <Route path='/shipping' element={<ShippingScreen />} />
+        <Route path='/payment' element={<PaymentScreen />} />
+        <Route path='/placeorder' element={<PlaceOrderScreen />} />
+      </Route>
     </Route>
   )
 );
@@ -42,7 +55,4 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

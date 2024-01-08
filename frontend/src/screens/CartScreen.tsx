@@ -12,13 +12,13 @@ import {
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { RootState } from '../store';
-import { addToCart, removeFromCart } from '../slices/cartSlice';
+import { CartState, addToCart, removeFromCart } from '../slices/cartSlice';
 
 const CartScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart);
-  const { cartItems } = cart;
+  const { cartItems }: CartState = cart;
 
   const isDisable = cartItems?.length === 0;
 
@@ -27,7 +27,9 @@ const CartScreen = () => {
   };
   const removeFromCartHandler = async (id: string) => {
     dispatch(removeFromCart(id));
-    
+  };
+  const checkoutHandler = () => {
+    navigate('/login?redirect=/shipping');
   };
 
   return (
@@ -100,6 +102,7 @@ const CartScreen = () => {
                 <Button
                   type='button'
                   className='btn-block'
+                  onClick={checkoutHandler}
                   disabled={isDisable}>
                   proceed to Checkout
                 </Button>

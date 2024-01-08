@@ -1,12 +1,12 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
-interface Review {
+export interface Review {
   user: Types.ObjectId;
   name: string;
   rating: number;
   comment: string;
 }
-interface Product extends Document {
+export interface Product extends Document {
   user: Types.ObjectId;
   name: string;
   image: string;

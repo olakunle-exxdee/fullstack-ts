@@ -1,4 +1,4 @@
-import mongoose, { Document, Model, Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 interface Order extends Document {
   user: Types.ObjectId;

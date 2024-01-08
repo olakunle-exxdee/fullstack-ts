@@ -1,15 +1,15 @@
 import bcrypt from 'bcryptjs';
 import mongoose, { Schema, model, Document } from 'mongoose';
 
-// interface User {
-//   id: number;
-//   name: string;
-//   email: string;
-//   password: string;
-//   isAdmin: boolean;
-// }
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+}
 
-const userSchema = new Schema(
+const userSchema = new Schema<User>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -33,7 +33,8 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-type UserInfer = typeof userSchema & typeof userSchema.methods.matchPassword;
+export type UserInfer = typeof userSchema &
+  typeof userSchema.methods.matchPassword;
 
 const User = model<UserInfer>('User', userSchema);
 
