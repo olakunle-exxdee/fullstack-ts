@@ -35,28 +35,16 @@ const PlaceOrderScreen = () => {
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
       }).unwrap();
-      console.log(res, 'res');
 
-      // dispatch(clearCartItems());
-      // navigate(`/order/${res._id}`);
+      dispatch(clearCartItems());
+      navigate(`/order/${res._id}`);
     } catch (error: any) {
       console.log(error, 'error');
 
       toast.error(error);
     }
   };
-  // if (error) {
-  //   if ('status' in error) {
-  //     // you can access all properties of `FetchBaseQueryError` here
-  //     const errMsg =
-  //       'error' in error ? error.error : JSON.stringify(error.data);
 
-  //     return errMsg;
-  //   } else {
-  //     // you can access all properties of `SerializedError` here
-  //     return error.message;
-  //   }
-  // }
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />

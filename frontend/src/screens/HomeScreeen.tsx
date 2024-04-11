@@ -22,9 +22,6 @@ const HomeScreeen = () => {
   const { data: products, error, isLoading } = useGetProductsQuery();
   if (isLoading) return <Loader />;
 
-  // fix thisroperty 'message' does not exist on type 'FetchBaseQueryError | SerializedError'.
-  // Property 'message' does not exist on type '{ status: number; data: unknown; }'
-
   if (error) {
     const errorMessage =
       'message' in error

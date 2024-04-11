@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import asyncHandler from '../middleware/asyncHandler';
 import Order from '../models/orderModel';
 
-interface IGetUserAuthInfoRequest extends Request {
+export interface IGetUserAuthInfoRequest extends Request {
   user: any;
 }
 
@@ -20,9 +20,6 @@ const addOrderItems = asyncHandler(
       shippingPrice,
       totalPrice,
     } = req.body;
-
-    const id = req.user.id;
-    console.log('id', req.user);
 
     if (orderItems && orderItems.length === 0) {
       res.status(400);
@@ -81,7 +78,25 @@ const getOrderById = asyncHandler(async (req: Request, res: Response) => {
 // @route   PUT /api/orders/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req: Request, res: Response) => {
-  res.send('updateOrderToPaid');
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+
+  order.isPaid = true;
+  order.paidAt = new Date();
+  order.paymentResult = {
+    id: req.body.id,
+    status: req.body.status,
+    update_time: req.body.update_time,
+    email_address: req.body.email_address,
+  };
+
+  const updatedOrder = await order.save();
+
+  res.status(200).json(updatedOrder);
 });
 
 // @desc    Update order to delivered
@@ -89,7 +104,19 @@ const updateOrderToPaid = asyncHandler(async (req: Request, res: Response) => {
 // @access  Private/Admin
 const updateOrderToDelivered = asyncHandler(
   async (req: Request, res: Response) => {
-    res.send('updateOrderToDelivered');
+    const order = await Order.findById(req?.params?.id);
+
+    if (!order) {
+      res.status(404);
+      throw new Error('Order not found');
+    }
+
+    order.isDelivered = true;
+    order.deliveredAt = new Date();
+
+    const updatedOrder = await order.save();
+
+    res.status(200).json(updatedOrder);
   }
 );
 
@@ -97,7 +124,9 @@ const updateOrderToDelivered = asyncHandler(
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req: Request, res: Response) => {
-  res.send('getOrders');
+  const orders = await Order.find({}).populate('user', 'id name');
+
+  res.status(200).json(orders);
 });
 
 export {

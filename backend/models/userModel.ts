@@ -1,15 +1,20 @@
 import bcrypt from 'bcryptjs';
-import mongoose, { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, model, Document, Model } from 'mongoose';
 
-interface User {
-  id: number;
+interface IUser {
+  id: string;
   name: string;
   email: string;
   password: string;
   isAdmin: boolean;
 }
 
-const userSchema = new Schema<User>(
+interface IUsermMethods {
+  matchPassword: (enteredPassword: string) => Promise<boolean>;
+}
+type UserModel = Model<IUser, {}, IUsermMethods>;
+
+const userSchema = new Schema<IUser, UserModel, UserModel>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -21,9 +26,10 @@ const userSchema = new Schema<User>(
   }
 );
 
-userSchema.methods.matchPassword = async function (enteredPassword: string) {
+userSchema.method('matchPassword', async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
-};
+});
+
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
@@ -33,9 +39,6 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-export type UserInfer = typeof userSchema &
-  typeof userSchema.methods.matchPassword;
-
-const User = model<UserInfer>('User', userSchema);
+const User = model<IUser, UserModel>('User', userSchema);
 
 export default User;
