@@ -21,17 +21,25 @@ const UserEditScreen = () => {
     isLoading,
     error,
     refetch,
-  } = useGetUserDetailsQuery(userId);
+  } = useGetUserDetailsQuery(userId as string);
+  const navigate = useNavigate();
 
-  console.log(user);
+  // console.log(userId, 'userId');
+  // console.log(user?._id, 'user');
+  // console.log(user?.name, 'user');
 
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation();
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      setName(user?.name);
+      setEmail(user?.email);
+      setIsAdmin(user?.isAdmin);
+    }
+  }, [user]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
-
     try {
       await updateUser({ userId, name, email, isAdmin });
       toast.success('User updated');
@@ -41,14 +49,6 @@ const UserEditScreen = () => {
       toast.error('User not updated');
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.isAdmin);
-    }
-  }, [user]);
 
   return (
     <>

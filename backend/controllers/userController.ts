@@ -94,6 +94,8 @@ const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
 const updateUserProfile = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById((req as any).user._id);
 
+  console.log(user);
+
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
@@ -131,7 +133,7 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
 // @route   GET /api/users/:id
 // @access  Private/Admin
 const getUserById = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById((req as any).user._id).select('-password');
+  const user = await User.findById((req as any).params.id);
 
   if (user) {
     res.status(200).json(user);
@@ -161,10 +163,11 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // @desc    Update user
-// @route   PUT /api/users/:id
+// @route   PUT /api/user/:id
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById((req as any).params.id);
+  console.log(user, 'user');
 
   if (user) {
     user.name = req.body.name || user.name;
