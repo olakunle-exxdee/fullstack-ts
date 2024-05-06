@@ -49,7 +49,6 @@ const Rating = ({ value, text }: { value: number; text: number }) => {
           <FaRegStar />
         )}
       </span>
-      <span className='rating-text'>{text && text} reviews</span>
     </div>
   );
 };

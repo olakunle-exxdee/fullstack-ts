@@ -15,6 +15,7 @@ export interface ProductType {
   countInStock: number;
   rating: number;
   numReviews: number;
+  review: [];
   qty: number;
 }
 
