@@ -4,10 +4,13 @@ import { ProductType } from '../screens/HomeScreeen';
 
 export const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<any, void>({
-      query: () => PRODUCTS_URL,
-      providesTags: ['Products'],
-      keepUnusedDataFor: 5,
+    getProducts: builder.query<any, { pageNumber: number }>({
+      query: ({ pageNumber }) => ({
+        url: PRODUCTS_URL,
+        params: { pageNumber },
+        providesTags: ['Products'],
+        keepUnusedDataFor: 5,
+      }),
     }),
     getProductDetails: builder.query<ProductType, string>({
       query: (productId) => `${PRODUCTS_URL}/${productId}`,

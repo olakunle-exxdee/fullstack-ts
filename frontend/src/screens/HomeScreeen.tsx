@@ -3,6 +3,7 @@ import Product from '../components/Product';
 import { useGetProductsQuery } from '../slices/productSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { useParams } from 'react-router-dom';
 
 export interface ProductType {
   _id: string;
@@ -20,7 +21,8 @@ export interface ProductType {
 }
 
 const HomeScreeen = () => {
-  const { data, error, isLoading } = useGetProductsQuery();
+  const { pageNumber  } = useParams<{ pageNumber: string }>();
+  const { data, error, isLoading } = useGetProductsQuery({ pageNumber: Number(pageNumber) });
   if (isLoading) return <Loader />;
 
   const products = data && data?.products;
