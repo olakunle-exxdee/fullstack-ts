@@ -62,7 +62,7 @@ const ProductEditScreen = () => {
       description,
     };
 
-    console.log(updatedProduct);
+   
 
     const result = await updateProduct(updatedProduct);
 
@@ -77,7 +77,7 @@ const ProductEditScreen = () => {
 
   const uploadFileHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
-    console.log(file);
+  
 
     const formData = new FormData();
     formData.append('image', file);

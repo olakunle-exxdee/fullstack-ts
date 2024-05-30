@@ -6,7 +6,7 @@ interface MyComponentProps {
   product: ProductType;
 }
 
-const Product = (product: MyComponentProps) => {
+const Product = (product: any) => {
   return (
     <Card className=' my-3 p-y rounded '>
       <Link to={`/product/${product.product._id}`}>

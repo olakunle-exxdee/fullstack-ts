@@ -94,7 +94,7 @@ const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
 const updateUserProfile = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById((req as any).user._id);
 
-  console.log(user);
+  
 
   if (user) {
     user.name = req.body.name || user.name;
@@ -167,7 +167,7 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById((req as any).params.id);
-  console.log(user, 'user');
+  
 
   if (user) {
     user.name = req.body.name || user.name;

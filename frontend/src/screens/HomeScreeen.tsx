@@ -20,9 +20,10 @@ export interface ProductType {
 }
 
 const HomeScreeen = () => {
-  const { data: products, error, isLoading } = useGetProductsQuery();
+  const { data, error, isLoading } = useGetProductsQuery();
   if (isLoading) return <Loader />;
 
+  const products = data && data?.products;
   if (error) {
     const errorMessage =
       'message' in error
@@ -36,7 +37,7 @@ const HomeScreeen = () => {
       <h1>Lastest Products</h1>
 
       <Row>
-        {products?.map((product: ProductType) => (
+        {products?.map((product: any) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product product={product} />
           </Col>

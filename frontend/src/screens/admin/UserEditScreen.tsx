@@ -24,9 +24,6 @@ const UserEditScreen = () => {
   } = useGetUserDetailsQuery(userId as string);
   const navigate = useNavigate();
 
-  // console.log(userId, 'userId');
-  // console.log(user?._id, 'user');
-  // console.log(user?.name, 'user');
 
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation();
 

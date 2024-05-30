@@ -135,7 +135,7 @@ const OrderScreen = () => {
     }
   };
 
-  console.log(order.isDelivered);
+ 
 
   return (
     <div>

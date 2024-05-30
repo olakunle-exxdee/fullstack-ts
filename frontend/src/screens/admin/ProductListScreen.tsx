@@ -74,7 +74,7 @@ const ProductListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {products?.map((product) => (
+              {products?.map((product :any) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
