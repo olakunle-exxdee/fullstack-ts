@@ -3,7 +3,9 @@ import Product from '../components/Product';
 import { useGetProductsQuery } from '../slices/productSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Paginate from '../components/Paginate';
+import ProductCarousel from '../components/ProductCarousel';
 
 export interface ProductType {
   _id: string;
@@ -21,8 +23,14 @@ export interface ProductType {
 }
 
 const HomeScreeen = () => {
-  const { pageNumber  } = useParams<{ pageNumber: string }>();
-  const { data, error, isLoading } = useGetProductsQuery({ pageNumber: Number(pageNumber) });
+  const { pageNumber, keyword = '' } = useParams<{
+    pageNumber: string;
+    keyword: string;
+  }>();
+  const { data, error, isLoading } = useGetProductsQuery({
+    keyword,
+    pageNumber: Number(pageNumber),
+  });
   if (isLoading) return <Loader />;
 
   const products = data && data?.products;
@@ -36,15 +44,30 @@ const HomeScreeen = () => {
   }
   return (
     <>
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to='/' className='btn btn-light m-2'>
+          Go Back
+        </Link>
+      )}
       <h1>Lastest Products</h1>
-
       <Row>
-        {products?.map((product: any) => (
+        {products?.map((product: ProductType) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product product={product} />
           </Col>
         ))}
+        {products?.length === 0 ? (
+          <Message variant=''>No Products Found</Message>
+        ) : null}
       </Row>
+      <Paginate
+        pages={data?.pages}
+        page={data?.page}
+        isAdmin={false}
+        keyword={keyword}
+      />
     </>
   );
 };

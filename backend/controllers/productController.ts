@@ -6,10 +6,17 @@ import Product from '../models/productModel';
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const pageSize = 2;
+  const pageSize = 1;
   const page = Number(req.query.pageNumber) || 1;
-  const count = await Product.countDocuments();
-  const products = await Product.find({})
+
+  const keyword = req.query.keyword
+    ? { name: { $regex: req.query.keyword, $options: 'i' } }
+    : {};
+
+  const count = await Product.countDocuments({ ...keyword });
+  const products = await Product.find({
+    ...keyword,
+  })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
@@ -22,9 +29,10 @@ const getProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await Product.findById(req.params.id);
   if (product) {
     return res.json(product);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
   }
-  res.status(404);
-  throw new Error('Resource not found');
 });
 
 // @desc    Create a products
@@ -130,6 +138,18 @@ const createProductReview = asyncHandler(
     }
   }
 );
+// @desc    Fetch product by rating
+// @route   GET /api/products/top
+// @access  Public
+const getTopProducts = asyncHandler(async (req: Request, res: Response) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+  if (products) {
+    return res.status(200).json(products);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
 
 export {
   getProducts,
@@ -138,4 +158,5 @@ export {
   updateProduct,
   deleteProduct,
   createProductReview,
+  getTopProducts,
 };

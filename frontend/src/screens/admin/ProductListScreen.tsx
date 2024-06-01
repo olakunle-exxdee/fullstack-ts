@@ -10,14 +10,17 @@ import {
 } from '../../slices/productSlice';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import Paginate from '../../components/Paginate';
 
 const ProductListScreen = () => {
-  const { pageNumber } = useParams<{ pageNumber: string }>();
+  const { pageNumber, keyword = '' } = useParams<{
+    pageNumber: string;
+    keyword: string;
+  }>();
   const { data, isLoading, error, refetch } = useGetProductsQuery({
+    keyword,
     pageNumber: Number(pageNumber),
   });
-
-  const { products } = data;
 
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
@@ -80,7 +83,7 @@ const ProductListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {products?.map((product: any) => (
+              {data.products?.map((product: any) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -104,7 +107,12 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
-          {/* PAGINATE PLACEHOLDER */}
+          <Paginate
+            pages={data.pages}
+            page={data.page}
+            isAdmin={true}
+            keyword={keyword}
+          />
         </>
       )}
     </>

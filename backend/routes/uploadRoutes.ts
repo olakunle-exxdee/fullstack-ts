@@ -1,22 +1,29 @@
 import path from 'path';
 import express, { Request, Response } from 'express';
-import multer from 'multer';
+import multer, { FileFilterCallback } from 'multer';
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
+  destination(
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void
+  ) {
     cb(null, 'uploads/');
   },
-  filename(req, file, cb) {
-    // cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+  filename(
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void
+  ) {
     cb(
       null,
       `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
     );
   },
 });
-function checkFileType(file: any, cb: any) {
+function checkFileType(file: Express.Multer.File, cb: FileFilterCallback) {
   const filetypes = /jpg|jpeg|png/;
   const extname = filetypes.test(
     path.extname(file.originalname).toLocaleLowerCase()
@@ -31,7 +38,11 @@ function checkFileType(file: any, cb: any) {
 
 const upload = multer({
   storage,
-  fileFilter: function (req, file, cb) {
+  fileFilter: function (
+    req: Request,
+    file: Express.Multer.File,
+    cb: FileFilterCallback
+  ) {
     checkFileType(file, cb);
   },
 });

@@ -4,10 +4,10 @@ import { ProductType } from '../screens/HomeScreeen';
 
 export const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<any, { pageNumber: number }>({
-      query: ({ pageNumber }) => ({
+    getProducts: builder.query<any, { pageNumber: number; keyword: string }>({
+      query: ({ keyword, pageNumber }) => ({
         url: PRODUCTS_URL,
-        params: { pageNumber },
+        params: { keyword, pageNumber },
         providesTags: ['Products'],
         keepUnusedDataFor: 5,
       }),
@@ -53,6 +53,10 @@ export const productSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Products'],
     }),
+    getTopProducts: builder.query<any, void>({
+      query: () => `${PRODUCTS_URL}/top`,
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -64,4 +68,5 @@ export const {
   useUploadProductImageMutation,
   useDeleteProductMutation,
   useCreateReviewMutation,
+  useGetTopProductsQuery,
 } = productSlice;

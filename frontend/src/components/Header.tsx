@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from '../hooks';
 import { CartState } from '../slices/cartSlice';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
+import SearchBox from './SearchBox';
 const Header = () => {
   const cart = useAppSelector((state) => state.cart);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
@@ -38,9 +39,11 @@ const Header = () => {
           <LinkContainer to='/'>
             <Navbar.Brand>Commerce</Navbar.Brand>
           </LinkContainer>
+
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
+              <SearchBox />
               <LinkContainer to='/cart'>
                 <Nav.Link>
                   <FaShoppingCart /> Cart
