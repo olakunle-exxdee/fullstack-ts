@@ -4,12 +4,12 @@
   "description": "",
   "main": "backend/server.js",
   "scripts": {
-    "build:backend": "node --max-old-space-size=4096 ./node_modules/.bin/tsc --project .",
-    "start": "npm run build:backend && node backend/server.js",
+    "build:backend": "tsc -p tsconfig.json",
+    "start": "node backend/server.js",
     "server": "nodemon backend/server.ts",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend ",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend && npm run build:backend",
     "serve": "node dist/server.js",
     "data:import": "ts-node backend/seeder.ts",
     "data:destroy": "ts-node backend/seeder.ts -d"
