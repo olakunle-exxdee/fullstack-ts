@@ -4,11 +4,11 @@
   "description": "",
   "main": "backend/server.js",
   "scripts": {
-    "build:backend": "tsc -p tsconfig.json",
-    "start": "node backend/server.js",
+    "start": "node dist/server.js",
     "server": "nodemon backend/server.ts",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build:backend": "tsc -p tsconfig.json",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend && npm run build:backend",
     "serve": "node dist/server.js",
     "data:import": "ts-node backend/seeder.ts",
@@ -19,6 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.10.3",
     "concurrently": "^8.2.2",
     "dotenv": "^16.3.1",
