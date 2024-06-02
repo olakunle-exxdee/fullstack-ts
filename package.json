@@ -2,9 +2,9 @@
   "name": "fullstack-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/server.js",
+  "main": "dist/backend/server.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node dist/backend/server.js",
     "server": "nodemon backend/server.ts",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
