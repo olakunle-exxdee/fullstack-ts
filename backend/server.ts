@@ -9,20 +9,11 @@ import orderRoutes from './routes/orderRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import connectDB from './config/db';
 import path from 'path';
-
-const app = express();
 const port = process.env.PORT || 5000;
 
-connectDB()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server Running on port ${port}`);
-    });
-  })
-  .catch((error) => {
-    // do something with error
-    console.log(error);
-  });
+connectDB();
+
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -58,5 +49,9 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(notFound);
 app.use(errorHandler);
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 
 export default app;
