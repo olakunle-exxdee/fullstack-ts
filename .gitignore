@@ -6,6 +6,7 @@ build
 /.pnp
 .pnp.js
 dist
+settings.json
 
 # testing
 /coverage
