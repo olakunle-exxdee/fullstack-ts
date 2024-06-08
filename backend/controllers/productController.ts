@@ -6,7 +6,7 @@ import Product from '../models/productModel';
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const pageSize = 1;
+  const pageSize = 3;
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
@@ -43,7 +43,7 @@ const createProduct = asyncHandler(async (req: Request, res: Response) => {
     name: 'Sample name',
     price: 200,
     user: (req as any).user._id,
-    image: '/images/product-cards.png',
+    image: '/images/camera.jpg',
     brand: 'Sample brand',
     category: 'Sample category',
     countInStock: 0,
